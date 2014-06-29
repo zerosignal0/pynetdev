@@ -115,7 +115,7 @@ class NetAutomaton(cmd.Cmd):
         devicelist_filename = common.user_specified_file()
         readline.set_completer(self.complete)
 
-        self.DEVICES = common.parse_file(devicelist_filename, logger)
+        self.DEVICES = common.parse_device_file(devicelist_filename, logger)
         logger.info('Devices added from {}\n{}'.format(devicelist_filename,
                                                        self.DEVICES))
 
@@ -180,7 +180,7 @@ class NetAutomaton(cmd.Cmd):
         commandlist_filename = common.user_specified_file()
         readline.set_completer(self.complete)
 
-        self.COMMANDS = common.parse_file(commandlist_filename, logger)
+        self.COMMANDS = common.parse_command_file(commandlist_filename, logger)
         logger.info('Commands added from {}\n{}'.format(commandlist_filename,
                                                        self.COMMANDS))
 
