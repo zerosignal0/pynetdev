@@ -36,7 +36,8 @@ kw = {
         'pyyaml >= 3.11',
 
     ],
-    'scripts':  ['bin/netautomaton.py']
+    'scripts':  ['bin/netautomaton.py'],
+    'packages': [ 'pynetdev', 'pynetdev.config' ],
 }
 
 try:
@@ -52,7 +53,6 @@ setup(
     author = "Gary Wright",
     author_email = "gwright@secureneo.com",
     url = "https://github.com/zerosignal0/pynetdev",
-    packages = [ 'pynetdev' ],
     license = 'LGPL',
     platforms = 'Posix; MacOS X', #Windows is currently unsupported due to pycrypto instability
     classifiers = [
