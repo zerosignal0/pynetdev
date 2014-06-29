@@ -15,7 +15,7 @@ from pynetdev.log import line_number
 from pynetdev.log import logging_argparse
 
 # Imports for configuration
-import pynetdev
+import pynetdev.config
 import pynetdev.netauto_common as common
 
 # Imports auto-completion class
