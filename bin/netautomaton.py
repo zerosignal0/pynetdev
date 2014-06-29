@@ -84,12 +84,12 @@ class NetAutomaton(cmd.Cmd):
         retrieve, parse and load the contents.
         '''
         if device_file:
-            self.DEVICES = common.parse_file(device_file, logger)
+            self.DEVICES = common.parse_device_file(device_file, logger)
             if self.DEVICES:
                 logger.info('Devices auto-added from {}\n{}'.format(device_file,
                                                                self.DEVICES))
         if command_file:
-            self.COMMANDS = common.parse_file(command_file, logger)
+            self.COMMANDS = common.parse_command_file(command_file, logger)
             if self.COMMANDS:
                 logger.info('Commands auto-added from {}\n{}'.format(command_file,
                                                                 self.COMMANDS))

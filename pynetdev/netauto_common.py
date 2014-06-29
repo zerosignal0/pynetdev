@@ -62,7 +62,7 @@ def user_specified_file():
         if os.path.isfile(user_input):
             return user_input
 
-def parse_file(filename, logger):
+def parse_device_file(filename, logger):
     """
     This function will attempt to open the provided file
     and convert the contents within the file into a
@@ -77,6 +77,22 @@ def parse_file(filename, logger):
             result = [line.strip('\n') for line in f if line]
             result = set([x for x in result if x])
             return list(result)
+
+def parse_command_file(filename, logger):
+    """
+    This function will attempt to open the provided file
+    and convert the contents within the file into a
+    newline separated list object and return.
+    """
+    if not os.path.isfile(filename):
+        logger.warning(
+            '{} not found, skipping auto-load.'.format(filename))
+        return list()
+    else:
+        with open(filename, 'r') as f:
+            result = [line.strip('\n') for line in f if line]
+            result = [x for x in result if x]
+            return result
 
 def add_entries(candidates, existing_entries, logger):
     """
