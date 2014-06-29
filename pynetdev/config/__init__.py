@@ -24,7 +24,6 @@ COLOR_CODES = {
 'underline' : "\033[.4m",
 'blink' : "\033[.5m",
 'reverse' : "\033[.7m",
-'concealed' : "\033[.8m",
 
 'red' : "\033[.31m",
 'green' : "\033[.32m",
