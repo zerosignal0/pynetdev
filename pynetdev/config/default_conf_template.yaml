@@ -1,0 +1,23 @@
+# Default yaml user configuration template for pynetdev.
+# Delete this file and execute netautomaton.py once to
+# generate a new blank template, or copy from
+# https://github.com/zerosignal0/pynetdev/blob/master/pynetdev/config/default_conf_template.yaml
+configuration:
+
+    max-parallel-conn-count: 0
+    error-output-regex: []
+    default-connection-type: ssh  # choices are ssh, telnet
+
+    ssh-settings:
+        conn-timeout: 10
+        command-timeout: 30
+        username: ''
+        auth-method: 'password'  # choices are password, ssh_agent, key
+        hostkey-autoadd: True
+        port: 22  # set default ssh port
+        default-private-key: ''  # optional /path/to/default/[keyname]
+
+    telnet-settings:
+        conn-timeout: 10
+        command-timeout: 30
+        username: ''

@@ -31,10 +31,12 @@ Required packages:
 kw = {
     'install_requires': [
         'rainbow_logging_handler >= 2.1.2',
-        'paramiko >= 1.14',
+        'fabric >= 1.8',
         'readline >= 6.2.4.1',
+        'pyyaml >= 3.11',
 
     ],
+    'scripts':  ['netautomaton.py']
 }
 
 try:
