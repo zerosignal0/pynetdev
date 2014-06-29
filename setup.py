@@ -36,16 +36,13 @@ kw = {
         'pyyaml >= 3.11',
 
     ],
-    'scripts':  ['bin/netautomaton.py',
-                 'pynetdev/config/banner1',
-                 'pynetdev/config/banner2',
-                 'pynetdev/config/banner3',
-                 'pynetdev/config/banner4',
-                 'pynetdev/config/banner5',
-                 'pynetdev/config/banner6',
-                 'pynetdev/config/default_conf_template.yaml', ],
-    'packages': [ 'pynetdev',
-                  'pynetdev.config'],
+    'scripts':  ['bin/netautomaton.py'],
+    'packages': [ 'pynetdev' ],
+    'package_dir': {
+        'pynetdev': 'pynetdev'},
+    'package_data': {
+        'pynetdev': ['pynetdev/config/*'],
+    },
 }
 
 try:
