@@ -36,7 +36,7 @@ kw = {
         'pyyaml >= 3.11',
 
     ],
-    'scripts':  ['netautomaton.py']
+    'scripts':  ['bin/netautomaton.py']
 }
 
 try:
