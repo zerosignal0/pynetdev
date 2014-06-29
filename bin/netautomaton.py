@@ -15,7 +15,7 @@ from pynetdev.log import line_number
 from pynetdev.log import logging_argparse
 
 # Imports for configuration
-import pynetdev.config
+import pynetdev
 import pynetdev.netauto_common as common
 
 # Imports auto-completion class
@@ -115,7 +115,7 @@ class NetAutomaton(cmd.Cmd):
         devicelist_filename = common.user_specified_file()
         readline.set_completer(self.complete)
 
-        self.DEVICES = common.parse_file(devicelist_filename)
+        self.DEVICES = common.parse_file(devicelist_filename, logger)
         logger.info('Devices added from {}\n{}'.format(devicelist_filename,
                                                        self.DEVICES))
 
@@ -180,7 +180,7 @@ class NetAutomaton(cmd.Cmd):
         commandlist_filename = common.user_specified_file()
         readline.set_completer(self.complete)
 
-        self.COMMANDS = common.parse_file(commandlist_filename)
+        self.COMMANDS = common.parse_file(commandlist_filename, logger)
         logger.info('Commands added from {}\n{}'.format(commandlist_filename,
                                                        self.COMMANDS))
 
