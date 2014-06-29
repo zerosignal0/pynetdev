@@ -37,11 +37,12 @@ kw = {
 
     ],
     'scripts':  ['bin/netautomaton.py'],
-    'packages': [ 'pynetdev' ],
+    'packages': [ 'pynetdev', 'pynetdev.config' ],
     'package_dir': {
         'pynetdev': 'pynetdev'},
     'package_data': {
-        'pynetdev': ['pynetdev/config/*'],
+        'pynetdev': ['config/banner*',
+                     'config/*.yaml',],
     },
 }
 
