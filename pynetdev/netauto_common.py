@@ -44,16 +44,15 @@ def query_user(question, valid, default=None):
     """Ask a question using raw_input, evaluating the users answer
     against a list that contains the possible accepted inputs.
     """
+    if default:
+        sys.stdout.write('{} [default: {}]'.format(question,
+                                                   default))
+    else:
+        sys.stdout.write(
+            '{} [enter one of the following: {}]'.format(question,
+                                                         valid))
 
     while True:
-        if default:
-            sys.stdout.write('{} [default: {}]'.format(question,
-                                              default))
-        else:
-            sys.stdout.write(
-                '{} [enter one of the following: {}]'.format(question,
-                                                             valid))
-
         choice = raw_input().lower()
         if default is not None and choice == '' and default in valid:
             return default
