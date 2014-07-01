@@ -83,8 +83,14 @@ def yaml_conf_handler(logger):
             with open(conf_file, 'w') as yaml_file:
                 yaml_file.write( yaml.dump(config_template, default_flow_style=False))
 
-            yaml_conf = yaml.safe_load(conf_file)
-            return yaml_conf['configuration']
+            # Open newly written configuration file and return back the yaml representation.
+            with open(conf_file) as f:
+                config = yaml.safe_load(f)
+
+            logger.info(
+                '{} has been loaded successfully.'.format(conf_file))
+
+            return config['configuration']
 
         except Exception as e:
             logger.error(
