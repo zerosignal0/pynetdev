@@ -75,12 +75,16 @@ def yaml_conf_handler(logger):
     if not os.path.isfile(conf_file):
         # Create new ~/.pynetdev.yaml file in users homedir and load
         try:
+            # Read the template yaml file, so that we can clone it out.
             with open(yaml_template_file) as f:
                 config_template = yaml.safe_load(f)
 
             # Now write loaded template yaml to new file in conf_file
             with open(conf_file, 'w') as yaml_file:
                 yaml_file.write( yaml.dump(config_template, default_flow_style=False))
+
+            with open(conf_file, 'r') as yaml_file:
+                return yaml_file['configuration']
 
         except Exception as e:
             logger.error(
@@ -99,7 +103,7 @@ def yaml_conf_handler(logger):
             logger.info(
                 '{} has been loaded successfully.'.format(conf_file))
 
-            return config
+            return config['configuration']
         except Exception as e:
             logger.error(
                 'Unable to load {}, {}'.format(conf_file, e))

@@ -51,7 +51,7 @@ logger = initialize_logger(args, __app_name__)
 
 # Launch yaml configuration method
 yaml_conf = pynetdev.config.yaml_conf_handler(logger)
-yaml_conf = yaml_conf['configuration']
+
 
 class NetAutomaton(cmd.Cmd):
     """Simple command processor example."""
