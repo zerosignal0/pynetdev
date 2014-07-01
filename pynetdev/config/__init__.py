@@ -36,7 +36,6 @@ COLOR_CODES = {
 
   }
 
-
 def intro_banner():
     '''
     This function returns the intro banner for netautomaton
@@ -108,4 +107,3 @@ def yaml_conf_handler(logger):
                 'Please fix bad entries in {}, or delete {} and run netautomaton.py again.'.format(
                     conf_file))
             sys.exit(1)
-

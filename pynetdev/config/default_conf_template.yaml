@@ -4,11 +4,12 @@
 # https://github.com/zerosignal0/pynetdev/blob/master/pynetdev/config/default_conf_template.yaml
 configuration:
 
-    max-parallel-conn-count: 0
+    max-parallel-conn-count: 0  # maximum number of concurrent parallel connections (if enabled).
     error-output-regex: [r' \^ |^%\s[A-Za-z]']
     default-connection-type: ssh  # choices are ssh, telnet
 
     ssh-settings:
+
         conn-timeout: 10
         command-timeout: 30
         username: ''
@@ -16,6 +17,10 @@ configuration:
         hostkey-autoadd: True
         port: 22  # set default ssh port
         default-private-key: ''  # optional /path/to/default/[keyname]
+        parallel-connections: False  # run commands in parallel
+        abort-on-prompts: True  # abort session if a interactive prompt is detected
+        reject_unknown_hosts: True
+
 
     telnet-settings:
         conn-timeout: 10

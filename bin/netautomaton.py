@@ -7,6 +7,7 @@ import sys
 import cmd
 import readline
 import signal
+import getpass
 
 
 # Imports for logging modules
@@ -17,6 +18,7 @@ from pynetdev.log import logging_argparse
 # Imports for configuration
 import pynetdev.config
 import pynetdev.netauto_common as common
+import pynetdev.credentials
 
 # Imports auto-completion class
 #import pynetdev.completer
@@ -49,6 +51,7 @@ logger = initialize_logger(args, __app_name__)
 
 # Launch yaml configuration method
 yaml_conf = pynetdev.config.yaml_conf_handler(logger)
+yaml_conf = yaml_conf['configuration']
 
 class NetAutomaton(cmd.Cmd):
     """Simple command processor example."""
@@ -273,6 +276,61 @@ class NetAutomaton(cmd.Cmd):
                             ]
         return completions
 # END show functions
+###
+# BEGIN execute functions
+    def help_execute(self):
+        print """
+        If you have specified network devices and commands to
+        execute, calling execute will gather credential information
+        and attempt execution of commands across the devices.
+
+        With the current configuration, the following would occur:
+
+        Commands :
+        {}
+
+        Will be executed across the following devices:
+        {}
+          """.format(self.COMMANDS, self.DEVICES)
+
+    def do_execute(self, line):
+        """This function is used to evaluate if the user has
+        provided the required data and, if so executes
+        commands across the provided devices with the parameters
+        specified."""
+        if not self.DEVICES or not self.COMMANDS:
+            print (
+            '{}YOU MUST SPECIFY DEVICES AND COMMANDS BEFORE YOU CAN PROCEED!{}'.format(pynetdev.config.COLOR_CODES['red'],
+                                                                                       pynetdev.config.COLOR_CODES['default']))
+            return
+
+        if yaml_conf['default-connection-type']:
+            q = "Please select a connection type: "
+            valid = ['ssh', 'telnet']
+            self.conn_type = common.query_user(
+                q, valid, default=yaml_conf['default-connection-type'])
+
+        # Now load all relevant connection type defaults from yaml_conf
+        if self.conn_type == 'ssh':
+            self.conn_timeout = yaml_conf['ssh-settings']['conn-timeout']
+            self.command_timeout = yaml_conf['ssh-settings']['command-timeout']
+            self.username = yaml_conf['ssh-settings']['username']
+            self.auth_method = yaml_conf['ssh-settings']['auth-method']
+            self.hostkey_autoadd = yaml_conf['ssh-settings']['hostkey-autoadd']
+            self.port = yaml_conf['ssh-settings']['port']
+            self.default_private_key = yaml_conf['ssh-settings']['default-private-key']
+            self.parallel_connections = yaml_conf['ssh-settings']['parallel-connections']
+            self.abort_on_prompts = yaml_conf['ssh-settings']['abort-on-prompts']
+            self.reject_unknown_hosts = yaml_conf['ssh-settings']['reject-unknown-hosts']
+
+            if not self.username:
+                self.username = raw_input(
+                    "Please specify the username you would like to connect with: [{}] ".format(getpass.getuser()))
+
+            if not self.auth_method or self.auth_method == 'password':
+                self.password = getpass.getpass('Please provide the authentication password for [{}].'.format(self.username))
+
+# END execute functions
 ###
 
 def main():
