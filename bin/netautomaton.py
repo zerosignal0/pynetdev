@@ -327,6 +327,8 @@ class NetAutomaton(cmd.Cmd):
 
             self.auth_method = yaml_conf['ssh-settings']['auth-method']
 
+            logger.info('self.DEVICES type: {} {}'.format(type(self.DEVICES), self.DEVICES))
+
             self.env.hosts = self.DEVICES
             self.env.commands = self.COMMANDS
             #self.env.abort_exception = 'CMDExecError'
@@ -350,7 +352,7 @@ class NetAutomaton(cmd.Cmd):
                                                                             getpass.getuser()))
 
             if self.auth_method == 'password':
-                self.password = getpass.getpass(
+                self.env.password = getpass.getpass(
                     'Please provide the authentication password for [{}].'.format(self.env.user))
 
             # Execute commands against

@@ -5,7 +5,7 @@
 configuration:
 
     max-parallel-conn-count: 10  # maximum number of concurrent parallel connections (if enabled).
-    parallel-connections: False  # run commands in parallel
+    parallel-connections: True  # run commands in parallel
     error-output-regex: ' \^ |^%\s[A-Za-z]'
     default-connection-type: ssh  # choices are ssh, telnet
 
@@ -16,7 +16,7 @@ configuration:
         username: ''
         auth-method: 'password'  # choices are password, ssh_agent, key
         hostkey-autoadd: True
-        port: 22  # set default ssh port
+        port: '22'  # set default ssh port
         default-private-key: ''  # optional /path/to/default/[keyname]
         abort-on-prompts: True  # abort session if a interactive prompt is detected
         reject-unknown-hosts: True
