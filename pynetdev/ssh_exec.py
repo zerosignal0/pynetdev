@@ -35,15 +35,16 @@ class ssh_execute(object):
     """
     def __init__(self, env_settings, logger):
 
+        print 'in ssh_execute __init__, setting up env'
+
         self.env = env_settings
         self.logger = logger
 
-        env = self.env
-        env.hosts = self.env.hosts
-        env.password = self.env.password
-        env.user = self.env.user
-        env.parallel = self.env.parallel
-        env.abort_on_prompts = self.env.abort_on_prompts
+        #env.hosts = self.env.hosts
+        #env.password = self.env.password
+        #env.user = self.env.user
+        #env.parallel = self.env.parallel
+        #env.abort_on_prompts = self.env.abort_on_prompts
 
     @parallel
     def parallel_run_cmd(self):
@@ -53,19 +54,20 @@ class ssh_execute(object):
                 self.logger.warning(
                     'command executed successfully, {}'.format(results))
 
-    @serial
-    def serial_run_cmd(self):
-        for command in self.env.commands:
-            results = run ( 'uname' )
-            if results:
-                self.logger.warning(
-                    'command executed successfully, {}'.format(results))
+    #@serial
+    #def serial_run_cmd(self):
+    #    for command in self.env.commands:
+    #        results = run ( 'uname' )
+    #        if results:
+    #            self.logger.warning(
+    #                'command executed successfully, {}'.format(results))
 
     def run_tests(self):
 
         print env
 
         if self.env.parallel:
+            print 'executing in parallel_run_cmd'
             execute(self.parallel_run_cmd())
-        else:
-            execute(self.serial_run_cmd())
+        #else:
+        #    execute(self.serial_run_cmd())
