@@ -5,6 +5,8 @@ fabric configuration.
 """
 from fabric.api import env, run, parallel, serial, execute
 
+env()
+
 ###
 # Custom exception
 class CMDExecError(Exception):
@@ -22,7 +24,7 @@ class ssh_execute(object):
 
     @parallel
     def parallel_run_cmd(self):
-        env = self.env_settings
+        env = self.env
         for command in self.env.commands:
             results = run (command)
             if results:
@@ -31,7 +33,7 @@ class ssh_execute(object):
 
     @serial
     def serial_run_cmd(self):
-        env = self.env_settings
+        env = self.env
         for command in self.env.commands:
             results = run (command)
             if results:
@@ -39,7 +41,7 @@ class ssh_execute(object):
                     'command executed successfully, {}'.format(results))
 
     def run_tests(self):
-        env = self.env_settings
+        env = self.env
 
         if self.env.parallel:
             execute(self.parallel_run_cmd())
