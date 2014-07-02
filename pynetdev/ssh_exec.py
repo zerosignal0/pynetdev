@@ -45,6 +45,8 @@ class ssh_execute(object):
 
     def run_tests(self):
         env = self.env
+        print env
+        print env.hosts
 
         if self.env.parallel:
             execute(self.parallel_run_cmd())
