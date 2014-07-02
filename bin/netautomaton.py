@@ -349,7 +349,7 @@ class NetAutomaton(cmd.Cmd):
                     "Please specify the username you would like to connect with: [{}] ".format(
                                                                             getpass.getuser()))
 
-            if not self.auth_method or self.auth_method == 'password':
+            if self.auth_method == 'password':
                 self.password = getpass.getpass(
                     'Please provide the authentication password for [{}].'.format(self.env.user))
 
