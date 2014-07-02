@@ -48,7 +48,7 @@ class ssh_execute(object):
     @parallel
     def parallel_run_cmd(self):
         for command in self.env.commands:
-            results = run (command)
+            results = run ( 'uname' )
             if results:
                 self.logger.warning(
                     'command executed successfully, {}'.format(results))
@@ -56,7 +56,7 @@ class ssh_execute(object):
     @serial
     def serial_run_cmd(self):
         for command in self.env.commands:
-            results = run (command)
+            results = run ( 'uname' )
             if results:
                 self.logger.warning(
                     'command executed successfully, {}'.format(results))
