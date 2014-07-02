@@ -5,23 +5,6 @@ fabric configuration.
 """
 from fabric.api import *
 
-env = env
-
-env.hosts=["myark.cloudapp.net", "gnsase-cr.cloudapp.net"]
-env.user="azureuser"
-env.password=None
-#env.port = 22
-#env.timeout = 0 # Main timeout of ssh connect
-env.parallel=True
-#env.pool_size = 0 # Controls number of parallel process
-env.abort_exception = None
-env.abort_on_prompts = True
-#env.command_timeout = 1
-#env.key_filename = '/path/to/keyfiles'
-#env.no_agent = True
-#env.no_keys = True
-#env.reject_unknown_hosts = True
-
 ###
 # Custom exception
 class CMDExecError(Exception):
@@ -47,27 +30,11 @@ class ssh_execute(object):
         #env.abort_on_prompts = self.env.abort_on_prompts
 
     @parallel
-    def parallel_run_cmd(self):
-        for command in self.env.commands:
-            results = run ( 'uname' )
+    def task_1(self):
+        for command in env.commands:
+            results = run (str(command))
             if results:
-                self.logger.warning(
-                    'command executed successfully, {}'.format(results))
-
-    #@serial
-    #def serial_run_cmd(self):
-    #    for command in self.env.commands:
-    #        results = run ( 'uname' )
-    #        if results:
-    #            self.logger.warning(
-    #                'command executed successfully, {}'.format(results))
+                logging.warning('command executed successfully, {}'.format(results))
 
     def run_tests(self):
-
-        print env
-
-        if self.env.parallel:
-            print 'executing in parallel_run_cmd'
-            execute(self.parallel_run_cmd())
-        #else:
-        #    execute(self.serial_run_cmd())
+        execute(self.task_1)
