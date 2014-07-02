@@ -37,12 +37,13 @@ class ssh_execute(object):
 
         self.env = env_settings
         self.logger = logger
-        self._init_env()
 
-    def _init_env(self):
         env = self.env
         env.hosts = self.env.hosts
         env.password = self.env.password
+        env.user = self.env.user
+        env.parallel = self.env.parallel
+        env.abort_on_prompts = self.env.abort_on_prompts
 
     @parallel
     def parallel_run_cmd(self):
@@ -61,6 +62,8 @@ class ssh_execute(object):
                     'command executed successfully, {}'.format(results))
 
     def run_tests(self):
+
+        print env
 
         if self.env.parallel:
             execute(self.parallel_run_cmd())
