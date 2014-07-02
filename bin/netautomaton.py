@@ -8,6 +8,7 @@ import cmd
 import readline
 import signal
 import getpass
+from fabric.api import env
 
 
 # Imports for logging modules
@@ -19,6 +20,7 @@ from pynetdev.log import logging_argparse
 import pynetdev.config
 import pynetdev.netauto_common as common
 import pynetdev.credentials
+import pynetdev.ssh_exec
 
 # Imports auto-completion class
 #import pynetdev.completer
@@ -52,7 +54,16 @@ logger = initialize_logger(args, __app_name__)
 # Launch yaml configuration method
 yaml_conf = pynetdev.config.yaml_conf_handler(logger)
 
+###
+# Custom exception
+class CMDExecError(Exception):
+    "Custom exception raised on error during cmd execution"
+    def __init__(self):
+        logger.error(
+            'An error has occured during command execution.')
 
+###
+# Main CLI class
 class NetAutomaton(cmd.Cmd):
     """Simple command processor example."""
     def __init__(self, device_file=None, command_file=None):
@@ -63,6 +74,7 @@ class NetAutomaton(cmd.Cmd):
         '''
 
         cmd.Cmd.__init__(self) # init cmd cli class
+        self.env = env  # Default instance of fabric env
         self.prompt = '{}network-automaton> '.format(
             pynetdev.config.COLOR_CODES['default'])
         self.intro = pynetdev.config.intro_banner() + pynetdev.config.INTRO_TEXT
@@ -312,24 +324,38 @@ class NetAutomaton(cmd.Cmd):
 
         # Now load all relevant connection type defaults from yaml_conf
         if self.conn_type == 'ssh':
-            self.conn_timeout = yaml_conf['ssh-settings']['conn-timeout']
-            self.command_timeout = yaml_conf['ssh-settings']['command-timeout']
-            self.username = yaml_conf['ssh-settings']['username']
+
             self.auth_method = yaml_conf['ssh-settings']['auth-method']
-            self.hostkey_autoadd = yaml_conf['ssh-settings']['hostkey-autoadd']
-            self.port = yaml_conf['ssh-settings']['port']
-            self.default_private_key = yaml_conf['ssh-settings']['default-private-key']
-            self.parallel_connections = yaml_conf['ssh-settings']['parallel-connections']
-            self.abort_on_prompts = yaml_conf['ssh-settings']['abort-on-prompts']
-            self.reject_unknown_hosts = yaml_conf['ssh-settings']['reject-unknown-hosts']
+
+            self.env.hosts = self.DEVICES
+            self.env.commands = self.COMMANDS
+            self.env.abort_exception = 'CMDExecError'
+            self.env.user = yaml_conf['ssh-settings']['username']
+            self.env.port = yaml_conf['ssh-settings']['port']
+            self.env.timeout = yaml_conf['ssh-settings']['conn-timeout']
+            self.env.parallel = yaml_conf['parallel-connections']
+            self.env.pool_size = yaml_conf['max-parallel-conn-count']
+            self.env.abort_on_prompts = yaml_conf['ssh-settings']['abort-on-prompts']
+            self.env.command_timeout = yaml_conf['ssh-settings']['command-timeout']
+            self.env.key_filename = yaml_conf['ssh-settings']['default-private-key']
+            self.env.no_agent = yaml_conf['ssh-settings']['restrict-ssh-agent']
+            self.env.no_keys = yaml_conf['ssh-settings']['restrict-ssh-keys']
+            self.env.hostkey_autoadd = yaml_conf['ssh-settings']['hostkey-autoadd']
+            self.env.default_private_key = yaml_conf['ssh-settings']['default-private-key']
+            self.env.reject_unknown_hosts = yaml_conf['ssh-settings']['reject-unknown-hosts']
 
             if not self.username:
-                self.username = raw_input(
-                    "Please specify the username you would like to connect with: [{}] ".format(getpass.getuser()))
+                self.env.user = raw_input(
+                    "Please specify the username you would like to connect with: [{}] ".format(
+                                                                            getpass.getuser()))
 
-            if not self.auth_method or self.auth_method == 'password':
-                self.password = getpass.getpass('Please provide the authentication password for [{}].'.format(self.username))
+            if not self.env.auth_method or self.auth_method == 'password':
+                self.env.password = getpass.getpass(
+                    'Please provide the authentication password for [{}].'.format(self.username))
 
+            # Execute commands against
+            run_cmd = pynetdev.ssh_exec.ssh_execute(self.env, logger)
+            run_cmd.run_tests()
 # END execute functions
 ###
 
