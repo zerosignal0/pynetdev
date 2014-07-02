@@ -84,6 +84,7 @@ def serial_run_cmd():
                 'command executed successfully, {}'.format(results))
 
 def run_tests():
+    print env
     if env.parallel:
         execute(parallel_run_cmd())
     else:
