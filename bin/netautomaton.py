@@ -384,9 +384,9 @@ class NetAutomaton(cmd.Cmd):
                 print env.hosts
 
             if self.env.parallel:
-                execute(self.parallel_run_cmd())
+                execute(self.do_execute.parallel_run_cmd())
             else:
-                execute(self.serial_run_cmd())
+                execute(self.do_execute.serial_run_cmd())
 
 # END execute functions
 ###
