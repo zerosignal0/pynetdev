@@ -3,8 +3,7 @@
 Execution classes for ssh based connections, using
 fabric configuration.
 """
-from fabric.api import run, parallel, serial, execute
-import logging
+from fabric.api import env, run, parallel, serial, execute
 
 ###
 # Custom exception
@@ -23,19 +22,25 @@ class ssh_execute(object):
 
     @parallel
     def parallel_run_cmd(self):
+        env = self.env_settings
         for command in self.env.commands:
             results = run (command)
             if results:
-                logging.warning('command executed successfully, {}'.format(results))
+                self.logger.warning(
+                    'command executed successfully, {}'.format(results))
 
     @serial
     def serial_run_cmd(self):
+        env = self.env_settings
         for command in self.env.commands:
             results = run (command)
             if results:
-                logging.warning('command executed successfully, {}'.format(results))
+                self.logger.warning(
+                    'command executed successfully, {}'.format(results))
 
     def run_tests(self):
+        env = self.env_settings
+
         if self.env.parallel:
             execute(self.parallel_run_cmd())
         else:
