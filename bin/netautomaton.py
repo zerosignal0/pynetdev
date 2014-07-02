@@ -331,7 +331,7 @@ class NetAutomaton(cmd.Cmd):
 
             self.env.hosts = self.DEVICES
             self.env.commands = self.COMMANDS
-            #self.env.abort_exception = 'CMDExecError'
+            self.env.abort_exception = 'CMDExecError'
             self.env.user = yaml_conf['ssh-settings']['username']
             #self.env.port = yaml_conf['ssh-settings']['port']
             #self.env.timeout = yaml_conf['ssh-settings']['conn-timeout']
