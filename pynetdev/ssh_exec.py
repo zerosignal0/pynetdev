@@ -5,6 +5,7 @@ fabric configuration.
 """
 from fabric.api import *
 
+env = env
 ###
 # Custom exception
 class CMDExecError(Exception):
