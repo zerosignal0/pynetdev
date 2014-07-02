@@ -344,8 +344,8 @@ class NetAutomaton(cmd.Cmd):
             #self.env.default_private_key = yaml_conf['ssh-settings']['default-private-key']
             #self.env.reject_unknown_hosts = yaml_conf['ssh-settings']['reject-unknown-hosts']
 
-            print 'abort_on_prompts type: {} value: {}'.format(self.env.abort_on_prompts)
-            print 'parallel type: {} value: {}'.format(self.env.parallel)
+            print 'abort_on_prompts type: {}'.format(type(self.env.abort_on_prompts))
+            print 'parallel type: {} '.format(type(self.env.parallel))
 
             if not self.env.user:
                 self.env.user = raw_input(
