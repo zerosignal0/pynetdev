@@ -63,6 +63,10 @@ class CMDExecError(Exception):
         logger.error(
             'An error has occured during command execution.')
 
+def init_hosts():
+    global env
+    env.hosts = env.hosts
+
 @parallel
 def parallel_run_cmd():
     for command in env.commands:
