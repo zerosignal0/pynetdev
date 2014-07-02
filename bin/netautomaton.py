@@ -97,7 +97,7 @@ class NetAutomaton(cmd.Cmd):
         '''
 
         cmd.Cmd.__init__(self) # init cmd cli class
-        self.env = ENV  # Default instance of fabric env
+        self.env = env  # Default instance of fabric env
         self.prompt = '{}network-automaton> '.format(
             pynetdev.config.COLOR_CODES['default'])
         self.intro = pynetdev.config.intro_banner() + pynetdev.config.INTRO_TEXT
