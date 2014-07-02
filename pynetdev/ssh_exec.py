@@ -3,7 +3,7 @@
 Execution classes for ssh based connections, using
 fabric configuration.
 """
-from fabric.api import env, run, parallel, serial, execute
+from fabric.api import *
 
 ###
 # Custom exception
