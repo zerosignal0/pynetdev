@@ -37,7 +37,7 @@ class ssh_execute(object):
 
         self.env = env_settings
         self.logger = logger
-        _init_env()
+        self._init_env()
 
     def _init_env(self):
         env = self.env
