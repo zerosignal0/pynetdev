@@ -54,7 +54,7 @@ logger = initialize_logger(args, __app_name__)
 # Launch yaml configuration method
 yaml_conf = pynetdev.config.yaml_conf_handler(logger)
 
-ENV = env
+env = env
 ###
 # Custom exception
 class CMDExecError(Exception):
@@ -62,6 +62,28 @@ class CMDExecError(Exception):
     def __init__(self):
         logger.error(
             'An error has occured during command execution.')
+
+@parallel
+def parallel_run_cmd():
+    for command in env.commands:
+        results = run (command)
+        if results:
+            logger.warning(
+                'command executed successfully, {}'.format(results))
+
+@serial
+def serial_run_cmd():
+    for command in env.commands:
+        results = run (command)
+        if results:
+            logger.warning(
+                'command executed successfully, {}'.format(results))
+
+def run_tests():
+    if env.parallel:
+        execute(parallel_run_cmd())
+    else:
+        execute(serial_run_cmd())
 
 ###
 # Main CLI class
@@ -356,37 +378,13 @@ class NetAutomaton(cmd.Cmd):
                 self.env.password = getpass.getpass(
                     'Please provide the authentication password for [{}].'.format(self.env.user))
 
+            global env
+            env = self.env
+            run_tests()
+
             # Execute commands against
             #run_cmd = pynetdev.ssh_exec.ssh_execute(self.env, logger)
             #run_cmd.run_tests()
-            def init_hosts(self):
-                self.env.hosts = self.env.hosts
-
-            @parallel
-            def parallel_run_cmd():
-                for command in self.env.commands:
-                    results = run (command)
-                    if results:
-                        self.logger.warning(
-                            'command executed successfully, {}'.format(results))
-
-            @serial
-            def serial_run_cmd(self):
-                for command in self.env.commands:
-                    results = run (command)
-                    if results:
-                        self.logger.warning(
-                            'command executed successfully, {}'.format(results))
-
-            def run_tests(self):
-                env = self.env
-                print env
-                print env.hosts
-
-            if self.env.parallel:
-                execute(self.do_execute.parallel_run_cmd())
-            else:
-                execute(self.do_execute.serial_run_cmd())
 
 # END execute functions
 ###
