@@ -8,7 +8,7 @@ import cmd
 import readline
 import signal
 import getpass
-from fabric.api import env
+from fabric.api import *
 
 
 # Imports for logging modules
@@ -54,6 +54,7 @@ logger = initialize_logger(args, __app_name__)
 # Launch yaml configuration method
 yaml_conf = pynetdev.config.yaml_conf_handler(logger)
 
+ENV = env
 ###
 # Custom exception
 class CMDExecError(Exception):
@@ -74,7 +75,7 @@ class NetAutomaton(cmd.Cmd):
         '''
 
         cmd.Cmd.__init__(self) # init cmd cli class
-        self.env = env  # Default instance of fabric env
+        self.env = ENV  # Default instance of fabric env
         self.prompt = '{}network-automaton> '.format(
             pynetdev.config.COLOR_CODES['default'])
         self.intro = pynetdev.config.intro_banner() + pynetdev.config.INTRO_TEXT
@@ -356,8 +357,37 @@ class NetAutomaton(cmd.Cmd):
                     'Please provide the authentication password for [{}].'.format(self.env.user))
 
             # Execute commands against
-            run_cmd = pynetdev.ssh_exec.ssh_execute(self.env, logger)
-            run_cmd.run_tests()
+            #run_cmd = pynetdev.ssh_exec.ssh_execute(self.env, logger)
+            #run_cmd.run_tests()
+            def init_hosts(self):
+                self.env.hosts = self.env.hosts
+
+            @parallel
+            def parallel_run_cmd():
+                for command in self.env.commands:
+                    results = run (command)
+                    if results:
+                        self.logger.warning(
+                            'command executed successfully, {}'.format(results))
+
+            @serial
+            def serial_run_cmd(self):
+                for command in self.env.commands:
+                    results = run (command)
+                    if results:
+                        self.logger.warning(
+                            'command executed successfully, {}'.format(results))
+
+            def run_tests(self):
+                env = self.env
+                print env
+                print env.hosts
+
+            if self.env.parallel:
+                execute(self.parallel_run_cmd())
+            else:
+                execute(self.serial_run_cmd())
+
 # END execute functions
 ###
 

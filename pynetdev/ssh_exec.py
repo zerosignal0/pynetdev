@@ -5,6 +5,23 @@ fabric configuration.
 """
 from fabric.api import *
 
+env = env
+
+env.hosts=["myark.cloudapp.net", "gnsase-cr.cloudapp.net"]
+env.user="azureuser"
+env.password=None
+#env.port = 22
+#env.timeout = 0 # Main timeout of ssh connect
+env.parallel=True
+#env.pool_size = 0 # Controls number of parallel process
+env.abort_exception = None
+env.abort_on_prompts = True
+#env.command_timeout = 1
+#env.key_filename = '/path/to/keyfiles'
+#env.no_agent = True
+#env.no_keys = True
+#env.reject_unknown_hosts = True
+
 ###
 # Custom exception
 class CMDExecError(Exception):
