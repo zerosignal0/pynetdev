@@ -5,7 +5,6 @@ fabric configuration.
 """
 from fabric.api import *
 
-env = env
 ###
 # Custom exception
 class CMDExecError(Exception):
@@ -18,8 +17,13 @@ class ssh_execute(object):
     the list of devices, using fabric.
     """
     def __init__(self, env_settings, logger):
+        self.env = env
         self.env = env_settings
+        self.env.hosts = env_settings.hosts
         self.logger = logger
+
+    def init_hosts(self):
+        self.env.hosts = self.env.hosts
 
     @parallel
     def parallel_run_cmd(self):
