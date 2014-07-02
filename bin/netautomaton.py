@@ -328,6 +328,7 @@ class NetAutomaton(cmd.Cmd):
             self.auth_method = yaml_conf['ssh-settings']['auth-method']
 
             self.env.hosts = self.DEVICES
+            self.env.host_string = self.DEVICES
             self.env.commands = self.COMMANDS
             self.env.abort_exception = 'CMDExecError'
             self.env.user = yaml_conf['ssh-settings']['username']
