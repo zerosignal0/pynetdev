@@ -328,22 +328,21 @@ class NetAutomaton(cmd.Cmd):
             self.auth_method = yaml_conf['ssh-settings']['auth-method']
 
             self.env.hosts = self.DEVICES
-            self.env.host_string = self.DEVICES
             self.env.commands = self.COMMANDS
-            self.env.abort_exception = 'CMDExecError'
+            #self.env.abort_exception = 'CMDExecError'
             self.env.user = yaml_conf['ssh-settings']['username']
-            self.env.port = yaml_conf['ssh-settings']['port']
-            self.env.timeout = yaml_conf['ssh-settings']['conn-timeout']
-            self.env.parallel = yaml_conf['parallel-connections']
-            self.env.pool_size = yaml_conf['max-parallel-conn-count']
-            self.env.abort_on_prompts = yaml_conf['ssh-settings']['abort-on-prompts']
-            self.env.command_timeout = yaml_conf['ssh-settings']['command-timeout']
-            self.env.key_filename = yaml_conf['ssh-settings']['default-private-key']
-            self.env.no_agent = yaml_conf['ssh-settings']['restrict-ssh-agent']
-            self.env.no_keys = yaml_conf['ssh-settings']['restrict-ssh-keys']
-            self.env.hostkey_autoadd = yaml_conf['ssh-settings']['hostkey-autoadd']
-            self.env.default_private_key = yaml_conf['ssh-settings']['default-private-key']
-            self.env.reject_unknown_hosts = yaml_conf['ssh-settings']['reject-unknown-hosts']
+            #self.env.port = yaml_conf['ssh-settings']['port']
+            #self.env.timeout = yaml_conf['ssh-settings']['conn-timeout']
+            #self.env.parallel = yaml_conf['parallel-connections']
+            #self.env.pool_size = yaml_conf['max-parallel-conn-count']
+            #self.env.abort_on_prompts = yaml_conf['ssh-settings']['abort-on-prompts']
+            #self.env.command_timeout = yaml_conf['ssh-settings']['command-timeout']
+            #self.env.key_filename = yaml_conf['ssh-settings']['default-private-key']
+            #self.env.no_agent = yaml_conf['ssh-settings']['restrict-ssh-agent']
+            #self.env.no_keys = yaml_conf['ssh-settings']['restrict-ssh-keys']
+            #self.env.hostkey_autoadd = yaml_conf['ssh-settings']['hostkey-autoadd']
+            #self.env.default_private_key = yaml_conf['ssh-settings']['default-private-key']
+            #self.env.reject_unknown_hosts = yaml_conf['ssh-settings']['reject-unknown-hosts']
 
             if not self.env.user:
                 self.env.user = raw_input(
