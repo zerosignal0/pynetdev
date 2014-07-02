@@ -344,14 +344,14 @@ class NetAutomaton(cmd.Cmd):
             self.env.default_private_key = yaml_conf['ssh-settings']['default-private-key']
             self.env.reject_unknown_hosts = yaml_conf['ssh-settings']['reject-unknown-hosts']
 
-            if not self.username:
+            if not self.env.user:
                 self.env.user = raw_input(
                     "Please specify the username you would like to connect with: [{}] ".format(
                                                                             getpass.getuser()))
 
-            if not self.env.auth_method or self.auth_method == 'password':
-                self.env.password = getpass.getpass(
-                    'Please provide the authentication password for [{}].'.format(self.username))
+            if not self.auth_method or self.auth_method == 'password':
+                self.password = getpass.getpass(
+                    'Please provide the authentication password for [{}].'.format(self.env.user))
 
             # Execute commands against
             run_cmd = pynetdev.ssh_exec.ssh_execute(self.env, logger)
