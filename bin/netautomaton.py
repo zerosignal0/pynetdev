@@ -54,7 +54,6 @@ logger = initialize_logger(args, __app_name__)
 # Launch yaml configuration method
 yaml_conf = pynetdev.config.yaml_conf_handler(logger)
 
-env = env
 ###
 # Custom exception
 class CMDExecError(Exception):
@@ -62,33 +61,6 @@ class CMDExecError(Exception):
     def __init__(self):
         logger.error(
             'An error has occured during command execution.')
-
-def init_hosts():
-    global env
-    env.hosts = env.hosts
-
-@parallel
-def parallel_run_cmd():
-    for command in env.commands:
-        results = run (command)
-        if results:
-            logger.warning(
-                'command executed successfully, {}'.format(results))
-
-@serial
-def serial_run_cmd():
-    for command in env.commands:
-        results = run (command)
-        if results:
-            logger.warning(
-                'command executed successfully, {}'.format(results))
-
-def run_tests():
-    print env
-    if env.parallel:
-        execute(parallel_run_cmd())
-    else:
-        execute(serial_run_cmd())
 
 ###
 # Main CLI class
@@ -102,7 +74,7 @@ class NetAutomaton(cmd.Cmd):
         '''
 
         cmd.Cmd.__init__(self) # init cmd cli class
-        self.env = env  # Default instance of fabric env
+        self.env = env
         self.prompt = '{}network-automaton> '.format(
             pynetdev.config.COLOR_CODES['default'])
         self.intro = pynetdev.config.intro_banner() + pynetdev.config.INTRO_TEXT
@@ -363,9 +335,9 @@ class NetAutomaton(cmd.Cmd):
             self.env.user = yaml_conf['ssh-settings']['username']
             #self.env.port = yaml_conf['ssh-settings']['port']
             #self.env.timeout = yaml_conf['ssh-settings']['conn-timeout']
-            #self.env.parallel = yaml_conf['parallel-connections']
+            self.env.parallel = yaml_conf['parallel-connections']
             #self.env.pool_size = yaml_conf['max-parallel-conn-count']
-            #self.env.abort_on_prompts = yaml_conf['ssh-settings']['abort-on-prompts']
+            self.env.abort_on_prompts = yaml_conf['ssh-settings']['abort-on-prompts']
             #self.env.command_timeout = yaml_conf['ssh-settings']['command-timeout']
             #self.env.key_filename = yaml_conf['ssh-settings']['default-private-key']
             #self.env.no_agent = yaml_conf['ssh-settings']['restrict-ssh-agent']
@@ -383,13 +355,8 @@ class NetAutomaton(cmd.Cmd):
                 self.env.password = getpass.getpass(
                     'Please provide the authentication password for [{}].'.format(self.env.user))
 
-            global env
-            env = self.env
-            run_tests()
-
-            # Execute commands against
-            #run_cmd = pynetdev.ssh_exec.ssh_execute(self.env, logger)
-            #run_cmd.run_tests()
+            ssh_run = pynetdev.ssh_exec.ssh_execute(self.env, logger)
+            ssh_run.run_tests()
 
 # END execute functions
 ###

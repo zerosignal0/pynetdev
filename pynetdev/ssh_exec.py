@@ -34,17 +34,18 @@ class ssh_execute(object):
     the list of devices, using fabric.
     """
     def __init__(self, env_settings, logger):
-        self.env = env
-        self.env = env_settings
-        self.env.hosts = env_settings.hosts
-        self.logger = logger
 
-    def init_hosts(self):
-        self.env.hosts = self.env.hosts
+        self.env = env_settings
+        self.logger = logger
+        _init_env()
+
+    def _init_env(self):
+        env = self.env
+        env.hosts = self.env.hosts
+        env.password = self.env.password
 
     @parallel
     def parallel_run_cmd(self):
-        env = self.env
         for command in self.env.commands:
             results = run (command)
             if results:
@@ -53,7 +54,6 @@ class ssh_execute(object):
 
     @serial
     def serial_run_cmd(self):
-        env = self.env
         for command in self.env.commands:
             results = run (command)
             if results:
@@ -61,9 +61,6 @@ class ssh_execute(object):
                     'command executed successfully, {}'.format(results))
 
     def run_tests(self):
-        env = self.env
-        print env
-        print env.hosts
 
         if self.env.parallel:
             execute(self.parallel_run_cmd())
