@@ -5,8 +5,6 @@ fabric configuration.
 """
 from fabric.api import env, run, parallel, serial, execute
 
-env()
-
 ###
 # Custom exception
 class CMDExecError(Exception):
